@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { Login } from "./components/Login";
+import { useAppDispatch, useAppSelector } from "./redux/store";
+import { loadStockOperation } from "./redux/stockOperationSlice";
 
-function App() {
+const App: React.FC<{}> = () => {
+  const { auth, isLoggedIn } = useAppSelector((state) => state.auth);
+  const { data, filter, order, page } = useAppSelector(
+    (state) => state.stockOperation
+  );
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(loadStockOperation({ filter, order, page }));
+  }, [filter, order, page]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Login />
+
+      {isLoggedIn && (
+        <>
+          <hr />
+          <div>Token: {auth?.access_token}</div>
+          <div>type: {auth?.token_type}</div>
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default App;
