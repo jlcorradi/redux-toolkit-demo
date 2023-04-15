@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { Login } from "./components/Login";
+
 import { useAppDispatch, useAppSelector } from "./redux/store";
 import { loadStockOperation } from "./redux/stockOperationSlice";
+import { RouterProvider } from "react-router-dom";
+import routes from "./routes";
 
 const App: React.FC<{}> = () => {
-  const { auth, isLoggedIn } = useAppSelector((state) => state.auth);
-  const { data, filter, order, page } = useAppSelector(
+  const { filter, order, page } = useAppSelector(
     (state) => state.stockOperation
   );
   const dispatch = useAppDispatch();
@@ -14,19 +15,7 @@ const App: React.FC<{}> = () => {
     dispatch(loadStockOperation({ filter, order, page }));
   }, [filter, order, page]);
 
-  return (
-    <div className="App">
-      <Login />
-
-      {isLoggedIn && (
-        <>
-          <hr />
-          <div>Token: {auth?.access_token}</div>
-          <div>type: {auth?.token_type}</div>
-        </>
-      )}
-    </div>
-  );
+  return <RouterProvider router={routes}></RouterProvider>;
 };
 
 export default App;
