@@ -18,4 +18,8 @@ const App: React.FC<{}> = () => {
   return <RouterProvider router={routes}></RouterProvider>;
 };
 
+function Dashboard() {
+  return <div>Dashboard</div>;
+}
+
 export default App;
